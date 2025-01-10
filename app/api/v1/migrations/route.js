@@ -22,11 +22,12 @@ const runMigrations = async (dryRun) => {
 
 export async function GET() {
     const pendingMigrations = await runMigrations(true);
-    return new Response(JSON.stringify({ pendingMigrations }), { status: 200 });
+    console.log(pendingMigrations);
+    return new Response(JSON.stringify(pendingMigrations), { status: 200 });
 }
 
 export async function POST() {
     const migratedMigrations = await runMigrations(false);
     const status = migratedMigrations.length > 0 ? 201 : 200;
-    return new Response(JSON.stringify({ migratedMigrations }), { status });
+    return new Response(JSON.stringify(migratedMigrations), { status });
 }
