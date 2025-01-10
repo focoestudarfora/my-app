@@ -9,7 +9,7 @@ const MAX_TIMEOUT = 1000;
  * Waits for all required services to be ready.
  */
 async function waitForAllServices() {
-  await waitForWebServer(WEB_SERVER_URL);
+    await waitForWebServer(WEB_SERVER_URL);
 }
 
 /**
@@ -17,31 +17,34 @@ async function waitForAllServices() {
  * @param {string} url - The status page URL to check.
  */
 async function waitForWebServer(url) {
-  await retry(async () => {
-    const response = await fetch(url);
-    if (response.status !== 200) {
-      throw new Error("Web server is not ready yet.");
-    }
-  }, { retries: MAX_RETRIES, maxTimeout: MAX_TIMEOUT });
+    await retry(
+        async () => {
+            const response = await fetch(url);
+            if (response.status !== 200) {
+                throw new Error("Web server is not ready yet.");
+            }
+        },
+        { retries: MAX_RETRIES, maxTimeout: MAX_TIMEOUT },
+    );
 }
 
 /**
  * Clears the database by dropping and recreating the public schema.
  */
 async function clearDatabase() {
-  const query = `
+    const query = `
     DROP SCHEMA public CASCADE;
     CREATE SCHEMA public;
   `;
-  await database.query(query);
+    await database.query(query);
 }
 
 /**
  * Orchestrator module for handling setup and teardown tasks.
  */
 const orchestrator = {
-  waitForAllServices,
-  clearDatabase,
+    waitForAllServices,
+    clearDatabase,
 };
 
 export default orchestrator;
